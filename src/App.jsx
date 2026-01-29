@@ -15,7 +15,7 @@ export default function App() {
         <a href="#projects">Projects</a>
         <a href="#play">Play (Unity)</a>
         <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
-        <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/charles-o-byrne-816454293/" target="_blank" rel="noreferrer">LinkedIn</a>
       </div>
 
       <hr style={{ margin: "1.5rem 0" }} />
