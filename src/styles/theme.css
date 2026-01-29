@@ -86,3 +86,59 @@ a:hover{ opacity: 0.9; }
   .grid.cols-3{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .grid.cols-2{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+.projectCards {
+  margin-top: 26px;
+}
+
+.projectCardLink {
+  display: block;
+}
+
+.projectCard {
+  padding: 22px;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  cursor: pointer;
+}
+
+.projectCard:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border-color: rgba(255,255,255,0.18);
+}
+
+.projectCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.projectCardTitle {
+  font-size: 20px;
+  font-weight: 680;
+  margin: 0;
+}
+
+.projectCardMeta {
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.projectCardDesc {
+  margin-top: 10px;
+  color: rgba(255,255,255,0.70);
+  line-height: 1.55;
+}
+
+.projectCardArrow {
+  opacity: 0.7;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.projectCard:hover .projectCardArrow {
+  transform: translateX(4px);
+  opacity: 0.95;
+}
