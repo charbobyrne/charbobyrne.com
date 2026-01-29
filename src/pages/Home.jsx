@@ -6,9 +6,9 @@ export default function Home() {
       <h1 className="h1">Charles B O&apos;Byrne</h1>
 
       <p className="sub">
-        Computer Engineering student at the University of Iowa (Graduation: May 2027). I build
-        open-source work in Python, Java, and C++, and I share practical engineering builds,
-        including Unity WebGL.
+        Computer Engineering student at the University of Iowa (Graduation: May 2027). 
+        I use this site to share my software design projects, game development work, 
+        and electrical engineering designs.
       </p>
 
       <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
