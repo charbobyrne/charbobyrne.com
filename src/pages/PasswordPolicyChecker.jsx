@@ -19,7 +19,7 @@ export default function PasswordPolicyChecker() {
           </a>
 
           <a className="btn"
-            href="/assets/password-policy-checker/UMLPasswordProgramSWD2026.png"
+            href={`${import.meta.env.BASE_URL}assets/password-policy-checker/UMLPasswordProgramSWD2026.png`}
             target="_blank"
             rel="noreferrer">
             View UML
