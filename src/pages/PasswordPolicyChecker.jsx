@@ -11,12 +11,20 @@ export default function PasswordPolicyChecker() {
       </p>
 
       <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
-        <a className="btn" href="/projects/password-policy-checker/doc/" target="_blank" rel="noreferrer">
-          View JavaDocs
-        </a>
-        <a className="btn" href="/assets/password-policy-checker/uml.png" target="_blank" rel="noreferrer">
-          View UML
-        </a>
+          <a className="btn"
+            href={`${import.meta.env.BASE_URL}projects/password-policy-checker/doc/index.html`}
+            target="_blank"
+            rel="noreferrer">
+            View JavaDocs
+          </a>
+
+          <a className="btn"
+            href="/assets/password-policy-checker/UMLPasswordProgramSWD2026.png"
+            target="_blank"
+            rel="noreferrer">
+            View UML
+          </a>
+
       </div>
 
       <div className="grid cols-2" style={{ marginTop: 22 }}>
