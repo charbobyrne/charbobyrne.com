@@ -79,7 +79,6 @@ export default function PasswordPolicyChecker() {
           />
         </div>
       </div>
-
     </section>
   );
 }
