@@ -26,20 +26,6 @@ export default function Projects() {
           </div>
         </Link>
 
-        {/* Game Design */}
-        <Link className="projectCardLink" to="/projects/games">
-          <div className="card projectCard">
-            <div className="projectCardTop">
-              <h3 className="projectCardTitle">Game Design</h3>
-              <div className="projectCardArrow">→</div>
-            </div>
-            <div className="projectCardDesc">
-              Unity-based gameplay systems and interactive builds, including
-              WebGL deployments.
-            </div>
-          </div>
-        </Link>
-
         {/* Electrical Engineering */}
         <Link className="projectCardLink" to="/projects/electrical">
           <div className="card projectCard">
@@ -50,6 +36,20 @@ export default function Projects() {
             <div className="projectCardDesc">
               Circuit design, hardware projects, and applied electrical systems.
               Content coming soon.
+            </div>
+          </div>
+        </Link>
+
+        {/* Game Design */}
+        <Link className="projectCardLink" to="/projects/games">
+          <div className="card projectCard">
+            <div className="projectCardTop">
+              <h3 className="projectCardTitle">Game Design</h3>
+              <div className="projectCardArrow">→</div>
+            </div>
+            <div className="projectCardDesc">
+              Unity-based gameplay systems and interactive builds, including
+              WebGL deployments.
             </div>
           </div>
         </Link>

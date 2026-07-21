@@ -13,7 +13,9 @@ import ProjectsSoftware from "./pages/ProjectsSoftware";
 import ProjectsSoftwareJava from "./pages/ProjectsSoftwareJava";
 import ProjectsGames from "./pages/ProjectsGames";
 import ProjectsElectrical from "./pages/ProjectsElectrical";
+import EmbeddedParkingSensor from "./pages/EmbeddedParkingSensor";
 import PasswordPolicyChecker from "./pages/PasswordPolicyChecker";
+import JavaProjectCaseStudy from "./pages/JavaProjectCaseStudy";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -29,9 +31,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/projects/software" element={<ProjectsSoftware />} />
           <Route path="/projects/software/java" element={<ProjectsSoftwareJava />} />
           <Route path="/projects/software/java/password-policy-checker" element={<PasswordPolicyChecker />} />
+          <Route path="/projects/software/java/:projectSlug" element={<JavaProjectCaseStudy />} />
 
           <Route path="/projects/games" element={<ProjectsGames />} />
           <Route path="/projects/electrical" element={<ProjectsElectrical />} />
+          <Route path="/projects/electrical/parking-sensor" element={<EmbeddedParkingSensor />} />
 
           <Route path="/play" element={<Play />} />
           <Route path="*" element={<NotFound />} />

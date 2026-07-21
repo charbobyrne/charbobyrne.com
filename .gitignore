@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Private academic source and project reports used to prepare portfolio pages
+project-materials/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

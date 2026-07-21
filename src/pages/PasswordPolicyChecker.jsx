@@ -9,7 +9,7 @@ export default function PasswordPolicyChecker() {
       <p className="sub">
         A Java password validation tool that enforces configurable security requirements and provides
         strength feedback based on character composition. Built with a clean separation between business
-        logic and user interaction.
+        logic and user interaction, with an emphasis on object-oriented software design.
       </p>
 
       {/* Buttons that jump to sections on THIS page */}
@@ -20,11 +20,13 @@ export default function PasswordPolicyChecker() {
 
       <div className="grid cols-2" style={{ marginTop: 22 }}>
         <div className="card" style={{ padding: 18 }}>
-          <div className="kicker">Design</div>
+          <div className="kicker">Software Design Focus</div>
+          <h2 style={{ margin: "10px 0 0" }}>Object-Oriented Design and Separation of Concerns</h2>
           <ul style={{ marginTop: 10, color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
-            <li>Two-class structure: driver (CLI) + core tool (business logic).</li>
-            <li>Business logic contains no I/O, improving testability and maintainability.</li>
-            <li>Policy values are defined as constants for easy future updates.</li>
+            <li>Encapsulates password policy and strength rules inside a focused PasswordTool object.</li>
+            <li>Separates the command-line driver and its I/O from reusable business logic.</li>
+            <li>Keeps policy values as named constants so requirements can change without rewriting the algorithm.</li>
+            <li>Exposes behavior through methods instead of allowing the driver to manage internal state directly.</li>
           </ul>
         </div>
 

@@ -145,3 +145,56 @@ a:hover{ opacity: 0.9; }
 html {
   scroll-behavior: smooth;
 }
+
+.caseStudyList {
+  margin: 12px 0 0;
+  padding-left: 22px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+}
+
+.artifactNote {
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.umlDiagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.92);
+}
+
+.javadocsFrame {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  background: white;
+}
+
+.backLink {
+  margin-top: 18px;
+}
+
+.artifactGrid {
+  margin-top: 12px;
+  align-items: start;
+}
+
+.artifactFigure {
+  margin: 0;
+}
+
+.artifactFigure figcaption {
+  margin-top: 10px;
+  color: rgba(255,255,255,0.65);
+  font-size: 14px;
+  line-height: 1.5;
+}

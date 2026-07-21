@@ -27,18 +27,6 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link className="projectCardLink" to="/projects/games">
-            <div className="card projectCard">
-              <div className="projectCardTop">
-                <h3 className="projectCardTitle">Game Design</h3>
-                <div className="projectCardArrow">→</div>
-              </div>
-              <div className="projectCardDesc">
-                Unity builds and gameplay systems. WebGL versions will live here.
-              </div>
-            </div>
-          </Link>
-
           <Link className="projectCardLink" to="/projects/electrical">
             <div className="card projectCard">
               <div className="projectCardTop">
@@ -47,6 +35,18 @@ export default function Home() {
               </div>
               <div className="projectCardDesc">
                 Circuit and hardware design work. Projects coming soon.
+              </div>
+            </div>
+          </Link>
+
+          <Link className="projectCardLink" to="/projects/games">
+            <div className="card projectCard">
+              <div className="projectCardTop">
+                <h3 className="projectCardTitle">Game Design</h3>
+                <div className="projectCardArrow">→</div>
+              </div>
+              <div className="projectCardDesc">
+                Unity builds and gameplay systems. WebGL versions will live here.
               </div>
             </div>
           </Link>
