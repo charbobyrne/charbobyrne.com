@@ -23,6 +23,19 @@ export default function ProjectsElectrical() {
             </div>
           </div>
         </Link>
+
+        <Link className="projectCardLink" to="/projects/electrical/iot-drone-controller">
+          <div className="card projectCard">
+            <div className="projectCardTop">
+              <h3 className="projectCardTitle">IoT Drone Controller</h3>
+              <div className="projectCardArrow" aria-hidden="true">→</div>
+            </div>
+            <div className="projectCardDesc">
+              A hand-and-whistle control system connecting wearable sensing,
+              edge processing, drone simulation, and cloud telemetry analytics.
+            </div>
+          </div>
+        </Link>
       </div>
     </section>
   );

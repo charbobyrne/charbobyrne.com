@@ -20,13 +20,15 @@ export default function ProjectsSoftware() {
           </div>
         </Link>
 
-        <Link className="projectCardLink" to="/projects/software/cpp">
+        <Link className="projectCardLink" to="/projects/software/c-cpp">
           <div className="card projectCard">
             <div className="projectCardTop">
-              <h3 className="projectCardTitle">C++</h3>
+              <h3 className="projectCardTitle">C/C++</h3>
               <div className="projectCardArrow">→</div>
             </div>
-            <div className="projectCardDesc">Coming soon.</div>
+            <div className="projectCardDesc">
+              Embedded firmware, sensor processing, real-time communication, and edge-control systems.
+            </div>
           </div>
         </Link>
 

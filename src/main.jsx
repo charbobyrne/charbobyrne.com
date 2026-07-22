@@ -11,9 +11,12 @@ import NotFound from "./pages/NotFound";
 
 import ProjectsSoftware from "./pages/ProjectsSoftware";
 import ProjectsSoftwareJava from "./pages/ProjectsSoftwareJava";
+import ProjectsSoftwareCCpp from "./pages/ProjectsSoftwareCCpp";
+import CCppProjectCaseStudy from "./pages/CCppProjectCaseStudy";
 import ProjectsGames from "./pages/ProjectsGames";
 import ProjectsElectrical from "./pages/ProjectsElectrical";
 import EmbeddedParkingSensor from "./pages/EmbeddedParkingSensor";
+import IoTDroneController from "./pages/IoTDroneController";
 import PasswordPolicyChecker from "./pages/PasswordPolicyChecker";
 import JavaProjectCaseStudy from "./pages/JavaProjectCaseStudy";
 
@@ -32,10 +35,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/projects/software/java" element={<ProjectsSoftwareJava />} />
           <Route path="/projects/software/java/password-policy-checker" element={<PasswordPolicyChecker />} />
           <Route path="/projects/software/java/:projectSlug" element={<JavaProjectCaseStudy />} />
+          <Route path="/projects/software/c-cpp" element={<ProjectsSoftwareCCpp />} />
+          <Route path="/projects/software/c-cpp/:projectSlug" element={<CCppProjectCaseStudy />} />
 
           <Route path="/projects/games" element={<ProjectsGames />} />
           <Route path="/projects/electrical" element={<ProjectsElectrical />} />
           <Route path="/projects/electrical/parking-sensor" element={<EmbeddedParkingSensor />} />
+          <Route path="/projects/electrical/iot-drone-controller" element={<IoTDroneController />} />
 
           <Route path="/play" element={<Play />} />
           <Route path="*" element={<NotFound />} />
