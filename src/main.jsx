@@ -17,6 +17,7 @@ import ProjectsGames from "./pages/ProjectsGames";
 import ProjectsElectrical from "./pages/ProjectsElectrical";
 import EmbeddedParkingSensor from "./pages/EmbeddedParkingSensor";
 import IoTDroneController from "./pages/IoTDroneController";
+import SiscProcessor from "./pages/SiscProcessor";
 import PasswordPolicyChecker from "./pages/PasswordPolicyChecker";
 import JavaProjectCaseStudy from "./pages/JavaProjectCaseStudy";
 
@@ -42,6 +43,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/projects/electrical" element={<ProjectsElectrical />} />
           <Route path="/projects/electrical/parking-sensor" element={<EmbeddedParkingSensor />} />
           <Route path="/projects/electrical/iot-drone-controller" element={<IoTDroneController />} />
+          <Route path="/projects/electrical/custom-32-bit-processor" element={<SiscProcessor />} />
+          <Route path="/projects/electrical/sisc-processor" element={<SiscProcessor />} />
 
           <Route path="/play" element={<Play />} />
           <Route path="*" element={<NotFound />} />

@@ -11,6 +11,20 @@ export default function ProjectsElectrical() {
       </p>
 
       <div className="grid cols-2" style={{ marginTop: 22 }}>
+        <Link className="projectCardLink" to="/projects/electrical/custom-32-bit-processor">
+          <div className="card projectCard">
+            <div className="projectCardTop">
+              <h3 className="projectCardTitle">Custom 32-bit Processor</h3>
+              <div className="projectCardArrow" aria-hidden="true">→</div>
+            </div>
+            <div className="projectCardDesc">
+              An educational Verilog CPU developed in three phases, from the ALU and
+              register datapath to branching, memory access, and hand-encoded
+              machine-code algorithms for sorting and multiplication.
+            </div>
+          </div>
+        </Link>
+
         <Link className="projectCardLink" to="/projects/electrical/parking-sensor">
           <div className="card projectCard">
             <div className="projectCardTop">
