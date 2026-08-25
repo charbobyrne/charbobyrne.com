@@ -44,8 +44,7 @@ export default function Navbar() {
         >
           <NavLink to="/" end style={linkStyle}>Home</NavLink>
           <NavLink to="/projects" style={linkStyle}>Projects</NavLink>
-          <NavLink to="/play" style={linkStyle}>Play</NavLink>
-
+          <NavLink to="/projects/ai" style={linkStyle}>AI</NavLink>
           <a className="btn" href="/resume.pdf" target="_blank" rel="noreferrer">
             Resume
           </a>

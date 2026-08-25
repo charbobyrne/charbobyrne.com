@@ -38,7 +38,7 @@ export default function ProjectsSoftware() {
               <h3 className="projectCardTitle">Python</h3>
               <div className="projectCardArrow">→</div>
             </div>
-            <div className="projectCardDesc">Coming soon.</div>
+            <div className="projectCardDesc">Data processing, machine learning, and applied AI projects.</div>
           </div>
         </Link>
       </div>

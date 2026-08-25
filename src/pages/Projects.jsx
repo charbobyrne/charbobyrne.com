@@ -6,12 +6,24 @@ export default function Projects() {
       <h1 className="h1">Projects</h1>
 
       <p className="sub" style={{ maxWidth: 640 }}>
-        A collection of my software design, game development, and electrical
+        A collection of my software design, artificial intelligence, and electrical
         engineering projects. Each category contains detailed write-ups,
         diagrams, and documentation where applicable.
       </p>
 
       <div className="grid cols-3" style={{ marginTop: 28 }}>
+        <Link className="projectCardLink" to="/projects/ai">
+          <div className="card projectCard projectCardAi">
+            <div className="projectCardTop">
+              <h3 className="projectCardTitle">Artificial Intelligence</h3>
+              <div className="projectCardArrow">→</div>
+            </div>
+            <div className="projectCardDesc">
+              Local language models, semantic search, vector databases, and data-driven analysis.
+            </div>
+          </div>
+        </Link>
+
         {/* Software Design */}
         <Link className="projectCardLink" to="/projects/software">
           <div className="card projectCard">
@@ -40,19 +52,6 @@ export default function Projects() {
           </div>
         </Link>
 
-        {/* Game Design */}
-        <Link className="projectCardLink" to="/projects/games">
-          <div className="card projectCard">
-            <div className="projectCardTop">
-              <h3 className="projectCardTitle">Game Design</h3>
-              <div className="projectCardArrow">→</div>
-            </div>
-            <div className="projectCardDesc">
-              Unity-based gameplay systems and interactive builds, including
-              WebGL deployments.
-            </div>
-          </div>
-        </Link>
       </div>
     </section>
   );

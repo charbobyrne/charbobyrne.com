@@ -7,14 +7,26 @@ export default function Home() {
 
       <p className="sub">
         Electrical Engineering: Computer student at the University of Iowa (Graduation: May 2027). 
-        I use this site to share my software design projects, game development work, 
-        and electrical engineering designs.
+        I use this site to share my software design, artificial intelligence,
+        and electrical engineering projects.
       </p>
 
       <div className="projectCards">
         <div className="kicker" style={{ marginBottom: 10 }}>Projects</div>
 
         <div className="grid cols-3">
+          <Link className="projectCardLink" to="/projects/ai">
+            <div className="card projectCard projectCardAi">
+              <div className="projectCardTop">
+                <h3 className="projectCardTitle">Artificial Intelligence</h3>
+                <div className="projectCardArrow">→</div>
+              </div>
+              <div className="projectCardDesc">
+                Local RAG systems, embeddings, vector search, and applied language models.
+              </div>
+            </div>
+          </Link>
+
           <Link className="projectCardLink" to="/projects/software">
             <div className="card projectCard">
               <div className="projectCardTop">
@@ -39,17 +51,6 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link className="projectCardLink" to="/projects/games">
-            <div className="card projectCard">
-              <div className="projectCardTop">
-                <h3 className="projectCardTitle">Game Design</h3>
-                <div className="projectCardArrow">→</div>
-              </div>
-              <div className="projectCardDesc">
-                Unity builds and gameplay systems. WebGL versions will live here.
-              </div>
-            </div>
-          </Link>
         </div>
       </div>
     </section>
