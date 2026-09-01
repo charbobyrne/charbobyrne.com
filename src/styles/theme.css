@@ -400,3 +400,63 @@ html {
     border-left: 0;
   }
 }
+
+.inProgressPage {
+  padding-top: 26px;
+}
+
+.passcodeCard {
+  max-width: 520px;
+  margin: 48px auto 0;
+  padding: 28px;
+}
+
+.passcodeCard h1,
+.inProgressPlaceholder h2 {
+  margin: 10px 0;
+}
+
+.passcodeForm {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.passcodeForm label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.passcodeForm input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  font: inherit;
+}
+
+.passcodeForm input:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+  outline: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.passcodeError {
+  margin: 0;
+  color: #fca5a5;
+  font-size: 14px;
+}
+
+.passcodeSubmit {
+  width: fit-content;
+  margin-top: 6px;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.inProgressPlaceholder {
+  margin-top: 26px;
+  padding: 28px;
+}

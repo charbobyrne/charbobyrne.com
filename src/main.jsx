@@ -22,6 +22,7 @@ import JavaProjectCaseStudy from "./pages/JavaProjectCaseStudy";
 import ProjectsAI from "./pages/ProjectsAI";
 import ClashRoyaleReviewAnalysis from "./pages/ClashRoyaleReviewAnalysis";
 import MovieRecommendationSystem from "./pages/MovieRecommendationSystem";
+import InProgressProjects from "./pages/InProgressProjects";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/" element={<Home />} />
 
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/in-progress" element={<InProgressProjects />} />
           <Route path="/projects/ai" element={<ProjectsAI />} />
           <Route path="/projects/ai/play-store-review-analysis" element={<ClashRoyaleReviewAnalysis />} />
           <Route path="/projects/ai/movie-recommendation-system" element={<MovieRecommendationSystem />} />
