@@ -47,7 +47,6 @@ export default function Projects() {
             </div>
             <div className="projectCardDesc">
               Circuit design, hardware projects, and applied electrical systems.
-              Content coming soon.
             </div>
           </div>
         </Link>

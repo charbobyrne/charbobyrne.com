@@ -46,7 +46,7 @@ export default function Home() {
                 <div className="projectCardArrow">→</div>
               </div>
               <div className="projectCardDesc">
-                Circuit and hardware design work. Projects coming soon.
+                Circuit design, hardware projects, and applied electrical systems.
               </div>
             </div>
           </Link>
