@@ -4,9 +4,11 @@ export default function TemperatureCard({ label, sensor, deviceOnline, unit }) {
   const hasReading = deviceOnline && sensor.connected && sensor.temperature !== null;
   const message = !deviceOnline
     ? "No Data Available"
-    : sensor.connected
-      ? "Live simulated reading"
-      : "Unplugged Sensor";
+    : sensor.stale
+      ? "Reading is stale"
+      : sensor.connected
+        ? "Live reading"
+        : "Sensor unavailable";
 
   return (
     <article className="card thermometerTemperatureCard">

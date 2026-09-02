@@ -6,7 +6,10 @@ import TemperatureCard from "./components/TemperatureCard";
 import TemperatureChart from "./components/TemperatureChart";
 import UnitToggle from "./components/UnitToggle";
 import { useThermometerData } from "./hooks/useThermometerData";
-import { thermometerService } from "./services/thermometerService";
+import {
+  thermometerService,
+  USING_MOCK_DATA,
+} from "./services/thermometerService";
 import "./thermometer.css";
 
 export default function ThermometerDashboard() {
@@ -20,15 +23,19 @@ export default function ThermometerDashboard() {
           <div className="kicker">ECE 4880 · Senior Design Lab 1</div>
           <h1>Internet-Connected Digital Thermometer</h1>
           <p className="sub">
-            A developing two-sensor temperature monitoring system. This Phase 1
-            interface currently uses local simulated data only.
+            Live temperature readings from the ECE 4880 two-sensor telemetry
+            pipeline. Device status is currently inferred from reading age.
           </p>
         </div>
         <div className="thermometerHeroControls">
-          <span className="thermometerDemoBadge">In Progress · Mock Data</span>
+          <span className="thermometerDemoBadge">
+            {USING_MOCK_DATA ? "In Progress · Mock Data" : "In Progress · Live Data"}
+          </span>
           <UnitToggle unit={unit} onChange={setUnit} />
         </div>
       </div>
+
+      {data.error && <p className="thermometerApiError" role="alert">{data.error}</p>}
 
       <div className="thermometerTemperatureGrid">
         {data.sensors.map((sensor) => (
@@ -46,16 +53,19 @@ export default function ThermometerDashboard() {
 
       <TemperatureChart history={data.history} unit={unit} />
 
-      <DisplayControls
-        deviceOnline={data.online}
-        sensors={data.sensors}
-        onChange={thermometerService.setDisplayEnabled}
-      />
-
-      <SimulationControls
-        scenario={data.scenario}
-        onChange={thermometerService.setScenario}
-      />
+      {USING_MOCK_DATA && (
+        <>
+          <DisplayControls
+            deviceOnline={data.online}
+            sensors={data.sensors}
+            onChange={thermometerService.setDisplayEnabled}
+          />
+          <SimulationControls
+            scenario={data.scenario}
+            onChange={thermometerService.setScenario}
+          />
+        </>
+      )}
     </section>
   );
 }

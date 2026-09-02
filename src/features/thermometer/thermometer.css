@@ -78,6 +78,15 @@
   margin-top: 28px;
 }
 
+.thermometerApiError {
+  margin: 20px 0 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.1);
+  color: #fecaca;
+}
+
 .thermometerTemperatureCard,
 .thermometerStatusPanel {
   padding: 22px;

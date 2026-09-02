@@ -57,7 +57,7 @@ export default function TemperatureChart({ history, unit }) {
     <section className="card thermometerChartPanel" aria-labelledby="temperature-history-title">
       <div className="thermometerChartHeader">
         <div>
-          <div className="kicker">Rolling local history</div>
+          <div className="kicker">Recorded sensor history</div>
           <h2 id="temperature-history-title">Previous 300 Seconds</h2>
         </div>
         <div className="thermometerChartLegend" aria-label="Chart legend">
@@ -107,9 +107,8 @@ export default function TemperatureChart({ history, unit }) {
       </div>
 
       <p className="thermometerChartNote">
-        New mock readings appear on the right. Missing sensor values create a gap rather than a zero reading.
+        New readings appear on the right. Missing sensor values create a gap rather than a zero reading.
       </p>
     </section>
   );
 }
-
