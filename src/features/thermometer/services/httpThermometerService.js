@@ -1,12 +1,14 @@
-const API_URL = (import.meta.env.VITE_LAB1_API_URL || "http://localhost:8000").replace(/\/$/, "");
+const API_URL = (import.meta.env.VITE_LAB1_API_URL || "http://localhost:8787").replace(/\/$/, "");
 const CURRENT_INTERVAL_MS = 1000;
-const HISTORY_INTERVAL_MS = 5000;
+const HISTORY_INTERVAL_MS = 30000;
 const REQUEST_TIMEOUT_MS = 4000;
 
 const listeners = new Set();
 let currentTimerId = null;
 let historyTimerId = null;
 let starting = false;
+let currentRequestPending = false;
+let historyRequestPending = false;
 
 let snapshot = {
   deviceId: "device1",
@@ -24,10 +26,26 @@ let snapshot = {
   history: [],
   loading: true,
   error: null,
+  historyError: null,
 };
 
 function notify() {
   listeners.forEach((listener) => listener());
+}
+
+function appendCurrentToHistory(current) {
+  const liveSensors = current.sensors.filter((sensor) => !sensor.stale && sensor.timestamp);
+  if (liveSensors.length === 0) return snapshot.history;
+  const timestampMs = Math.max(...liveSensors.map((sensor) => Date.parse(sensor.timestamp)));
+  if (!Number.isFinite(timestampMs)) return snapshot.history;
+  const timestamp = new Date(Math.floor(timestampMs / 1000) * 1000).toISOString();
+  const point = { timestamp, sensor1: null, sensor2: null };
+  for (const sensor of liveSensors) point[sensor.sensorId] = sensor.temperature;
+  const withoutSameTimestamp = snapshot.history.filter((item) => item.timestamp !== timestamp);
+  const cutoff = timestampMs - 300000;
+  return [...withoutSameTimestamp, point]
+    .filter((item) => Date.parse(item.timestamp) >= cutoff)
+    .sort((left, right) => Date.parse(left.timestamp) - Date.parse(right.timestamp));
 }
 
 async function fetchJson(path) {
@@ -46,9 +64,17 @@ async function fetchJson(path) {
 }
 
 async function refreshCurrent() {
+  if (currentRequestPending) return;
+  currentRequestPending = true;
   try {
     const current = await fetchJson("/api/lab1/current");
-    snapshot = { ...snapshot, ...current, loading: false, error: null };
+    snapshot = {
+      ...snapshot,
+      ...current,
+      history: appendCurrentToHistory(current),
+      loading: false,
+      error: null,
+    };
   } catch (error) {
     snapshot = {
       ...snapshot,
@@ -57,18 +83,49 @@ async function refreshCurrent() {
         ? "The thermometer API timed out."
         : "Live thermometer data is unavailable.",
     };
+  } finally {
+    currentRequestPending = false;
+    notify();
   }
-  notify();
 }
 
 async function refreshHistory() {
+  if (historyRequestPending) return;
+  historyRequestPending = true;
   try {
     const response = await fetchJson("/api/lab1/history?seconds=300");
-    snapshot = { ...snapshot, history: response.history };
-    notify();
+    snapshot = { ...snapshot, history: response.history, historyError: null };
   } catch {
-    // Keep current readings usable if only the history request fails.
+    snapshot = {
+      ...snapshot,
+      historyError: "Recorded temperature history is unavailable.",
+    };
+  } finally {
+    historyRequestPending = false;
+    notify();
   }
+}
+
+function clearTimers() {
+  if (currentTimerId !== null) window.clearInterval(currentTimerId);
+  if (historyTimerId !== null) window.clearInterval(historyTimerId);
+  currentTimerId = null;
+  historyTimerId = null;
+}
+
+function scheduleTimers() {
+  if (document.hidden || currentTimerId !== null) return;
+  currentTimerId = window.setInterval(refreshCurrent, CURRENT_INTERVAL_MS);
+  historyTimerId = window.setInterval(refreshHistory, HISTORY_INTERVAL_MS);
+}
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    clearTimers();
+    return;
+  }
+  void Promise.all([refreshCurrent(), refreshHistory()]);
+  scheduleTimers();
 }
 
 async function start() {
@@ -77,8 +134,7 @@ async function start() {
   try {
     await Promise.all([refreshCurrent(), refreshHistory()]);
     if (listeners.size > 0) {
-      currentTimerId = window.setInterval(refreshCurrent, CURRENT_INTERVAL_MS);
-      historyTimerId = window.setInterval(refreshHistory, HISTORY_INTERVAL_MS);
+      scheduleTimers();
     }
   } finally {
     starting = false;
@@ -86,10 +142,8 @@ async function start() {
 }
 
 function stop() {
-  if (currentTimerId !== null) window.clearInterval(currentTimerId);
-  if (historyTimerId !== null) window.clearInterval(historyTimerId);
-  currentTimerId = null;
-  historyTimerId = null;
+  clearTimers();
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
 }
 
 export const httpThermometerService = {
@@ -98,6 +152,9 @@ export const httpThermometerService = {
   },
   subscribe(listener) {
     listeners.add(listener);
+    if (listeners.size === 1) {
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
     start();
     return () => {
       listeners.delete(listener);

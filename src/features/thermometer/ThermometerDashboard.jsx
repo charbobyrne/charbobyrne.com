@@ -35,7 +35,13 @@ export default function ThermometerDashboard() {
         </div>
       </div>
 
+      {data.loading && (
+        <p className="thermometerApiNotice" role="status">Loading live thermometer data…</p>
+      )}
       {data.error && <p className="thermometerApiError" role="alert">{data.error}</p>}
+      {data.historyError && (
+        <p className="thermometerApiError" role="alert">{data.historyError}</p>
+      )}
 
       <div className="thermometerTemperatureGrid">
         {data.sensors.map((sensor) => (

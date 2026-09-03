@@ -22,7 +22,7 @@ export default function DeviceStatus({ deviceOnline, sensors }) {
         <StatusItem
           label="Thermometer Device"
           online={deviceOnline}
-          detail={deviceOnline ? "Online" : "No Data Available"}
+          detail={deviceOnline ? "Online" : "Offline or no recent heartbeat"}
         />
         {sensors.map((sensor) => (
           <StatusItem

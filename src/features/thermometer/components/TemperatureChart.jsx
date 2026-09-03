@@ -67,6 +67,11 @@ export default function TemperatureChart({ history, unit }) {
       </div>
 
       <div className="thermometerChartScroller">
+        {history.length === 0 && (
+          <p className="thermometerEmptyHistory" role="status">
+            No temperature history is available yet.
+          </p>
+        )}
         <svg
           className="thermometerChart"
           viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}

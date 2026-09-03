@@ -78,13 +78,29 @@
   margin-top: 28px;
 }
 
-.thermometerApiError {
+.thermometerApiError,
+.thermometerApiNotice {
   margin: 20px 0 0;
   padding: 12px 14px;
-  border: 1px solid rgba(248, 113, 113, 0.35);
   border-radius: 10px;
+}
+
+.thermometerApiError {
+  border: 1px solid rgba(248, 113, 113, 0.35);
   background: rgba(248, 113, 113, 0.1);
   color: #fecaca;
+}
+
+.thermometerApiNotice {
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.1);
+  color: #bae6fd;
+}
+
+.thermometerEmptyHistory {
+  margin: 0 0 12px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .thermometerTemperatureCard,
