@@ -77,15 +77,15 @@ export default function EmailAlerts() {
     try {
       const next = { ...settings, enabled: true, maxC: enabled ? 20 : 35 };
       if (Number(next.minC) >= next.maxC) {
-        throw new Error(`The minimum must be below ${next.maxC} °C before using this test.`);
+        throw new Error(`The minimum must be below ${next.maxC} degrees C before using this test.`);
       }
       const result = await emailRequest("settings", token, next);
       setSettings(result.settings);
       setDraft(result.settings);
       setConfigured(result.configured);
       setStatus(enabled
-        ? "20 °C email test enabled. Waiting for a fresh reading above 20 °C."
-        : "Test threshold removed. Maximum restored to 35 °C.");
+        ? "20 degrees C email test enabled. Waiting for a fresh reading above 20 degrees C."
+        : "Test threshold removed. Maximum restored to 35 degrees C.");
     } catch (failure) {
       setError(failure.message);
     } finally {
@@ -112,9 +112,9 @@ export default function EmailAlerts() {
           <label className="thermometerEmailEnabled">
             <input type="checkbox" checked={settings.enabled && Number(settings.maxC) === 20}
               onChange={setTestThreshold} disabled={busy || !configured} />
-            20 °C email test
+            20 degrees C email test
           </label>
-          <small>Immediately saves a 20 °C maximum and enables alerts. A fresh reading above 20 °C sends one email per sensor.</small>
+          <small>Immediately saves a 20 degrees C maximum and enables alerts. A fresh reading above 20 degrees C sends one email per sensor.</small>
           <label>Recipient email<input name="recipient" type="email" value={draft.recipient} onChange={updateDraft} required maxLength={254} /></label>
           <div className="thermometerEmailLimits">
             <label>Minimum (Â°C)<input name="minC" type="number" min="-55" max="125" step="any" value={draft.minC} onChange={updateDraft} required /></label>
