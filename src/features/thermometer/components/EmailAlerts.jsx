@@ -99,8 +99,8 @@ export default function EmailAlerts() {
       <p>Receive an email when either sensor goes above or below your limits. Keep this page visible and the device online to monitor.</p>
       {!token ? (
         <form onSubmit={connect} className="thermometerEmailForm">
-          <label>Alert access token
-            <input type="password" value={tokenInput} onChange={(event) => setTokenInput(event.target.value)} required autoComplete="off" />
+          <label className="thermometerTokenField">Alert access token
+            <input type="password" size="14" value={tokenInput} onChange={(event) => setTokenInput(event.target.value)} required autoComplete="off" />
           </label>
           <small>Use your project control token. It stays in this page’s memory.</small>
           <button type="submit" disabled={busy}>{busy ? "Connecting…" : "Connect email alerts"}</button>
@@ -120,8 +120,8 @@ export default function EmailAlerts() {
             <label>Minimum (°C)<input name="minC" type="number" min="-55" max="125" step="any" value={draft.minC} onChange={updateDraft} required /></label>
             <label>Maximum (°C)<input name="maxC" type="number" min="-55" max="125" step="any" value={draft.maxC} onChange={updateDraft} required /></label>
           </div>
-          <label>Low-temperature message<textarea name="lowMessage" value={draft.lowMessage} onChange={updateDraft} required maxLength={1000} rows={3} /></label>
-          <label>High-temperature message<textarea name="highMessage" value={draft.highMessage} onChange={updateDraft} required maxLength={1000} rows={3} /></label>
+          <label>Low-temperature message<textarea name="lowMessage" value={draft.lowMessage} onChange={updateDraft} required maxLength={1000} rows={2} /></label>
+          <label>High-temperature message<textarea name="highMessage" value={draft.highMessage} onChange={updateDraft} required maxLength={1000} rows={2} /></label>
           <p className="thermometerChartNote">Limits apply to both sensors and are saved in Celsius. One email is sent per high/low episode; a fresh in-range reading re-arms the alert. Emails are limited to one per sensor per minute.</p>
           <div className="thermometerEmailActions">
             <button type="submit" disabled={busy}>{busy ? "Saving…" : "Save email settings"}</button>

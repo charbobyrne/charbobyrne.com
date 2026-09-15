@@ -57,8 +57,8 @@ export default function LiveDisplayControls({ data }) {
       <div className="kicker">Remote device controls</div>
       <h2 id="live-display-title">Sensor displays</h2>
       <p className="thermometerDisplayNote">These switches control the display on the ESP32 box. Temperature measurement and cloud storage continue when a display is off.</p>
-      <label className="thermometerEmailForm">Control token
-        <input type="password" autoComplete="off" value={token} onChange={(event) => setToken(event.target.value)} />
+      <label className="thermometerTokenField">Control token
+        <input type="password" size="14" autoComplete="off" value={token} onChange={(event) => setToken(event.target.value)} />
       </label>
       <p className="thermometerChartNote">The token stays in this page’s memory. Switches show the device’s reported state, not an assumed result.</p>
       <div className="thermometerDisplayGrid">

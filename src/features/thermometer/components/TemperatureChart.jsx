@@ -3,8 +3,8 @@ import { historyWindow } from "../utils/history.js";
 import { convertTemperature } from "../utils/temperature";
 
 const VIEW_WIDTH = 1000;
-const VIEW_HEIGHT = 360;
-const PADDING = { top: 24, right: 24, bottom: 48, left: 64 };
+const VIEW_HEIGHT = 300;
+const PADDING = { top: 20, right: 20, bottom: 42, left: 58 };
 const PLOT_WIDTH = VIEW_WIDTH - PADDING.left - PADDING.right;
 const PLOT_HEIGHT = VIEW_HEIGHT - PADDING.top - PADDING.bottom;
 

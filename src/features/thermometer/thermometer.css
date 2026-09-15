@@ -78,6 +78,21 @@
   margin-top: 28px;
 }
 
+.thermometerWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: start;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.thermometerWorkspace.isMock { grid-template-columns: 1fr; }
+.thermometerReadingsColumn,
+.thermometerControlsColumn { min-width: 0; }
+.thermometerWorkspace .thermometerTemperatureGrid { margin-top: 0; }
+.thermometerControlsColumn { display: grid; gap: 16px; }
+.thermometerControlsColumn > .card { margin-top: 0; }
+
 .thermometerApiError,
 .thermometerApiNotice {
   margin: 20px 0 0;
@@ -483,3 +498,61 @@
 .thermometerEmailForm button:disabled { opacity: 0.5; cursor: wait; }
 .thermometerEmailForm :focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
 @media (max-width: 720px) { .thermometerEmailLimits { grid-template-columns: 1fr; } }
+
+.thermometerTokenField {
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+  color: var(--text);
+}
+
+.thermometerTokenField input,
+.thermometerEmailForm .thermometerTokenField input {
+  box-sizing: border-box;
+  width: 14ch;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  font: inherit;
+}
+
+@media (max-width: 1050px) {
+  .thermometerWorkspace { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 1051px) {
+  .thermometerDashboard { padding-top: 4px; }
+  .thermometerHero h1 { margin: 7px 0 5px; font-size: clamp(30px, 3vw, 42px); }
+  .thermometerHero .sub { margin: 0; font-size: 14px; }
+  .thermometerTemperatureCard,
+  .thermometerStatusPanel,
+  .thermometerChartPanel,
+  .thermometerDisplayPanel,
+  .thermometerEmailPanel { padding: 14px; }
+  .thermometerReading { margin-top: 12px; font-size: clamp(38px, 4.5vw, 58px); }
+  .thermometerReading small { font-size: 17px; }
+  .thermometerCardMessage { margin-top: 7px; }
+  .thermometerStatusPanel,
+  .thermometerChartPanel { margin-top: 10px; }
+  .thermometerStatusGrid { gap: 8px; margin-top: 10px; }
+  .thermometerStatusItem { gap: 8px; padding: 9px; }
+  .thermometerChartScroller { margin-top: 9px; }
+  .thermometerChartNote { margin-top: 6px; line-height: 1.3; }
+  .thermometerControlsColumn { gap: 10px; }
+  .thermometerDisplayPanel h2,
+  .thermometerEmailPanel h2 { font-size: 21px; }
+  .thermometerDisplayNote,
+  .thermometerEmailPanel > p { margin: 6px 0; font-size: 13px; line-height: 1.35; }
+  .thermometerDisplayGrid { grid-template-columns: 1fr; gap: 7px; margin-top: 9px; }
+  .thermometerSensorControl { padding: 9px 11px; }
+  .thermometerEmailForm { gap: 8px; }
+  .thermometerEmailForm label { gap: 4px; font-size: 13px; }
+  .thermometerEmailForm input:not([type="checkbox"]),
+  .thermometerEmailForm textarea { padding: 6px 8px; }
+  .thermometerEmailForm textarea { max-height: 52px; }
+  .thermometerEmailForm button { padding: 7px 11px; }
+  .thermometerEmailLimits { gap: 8px; }
+}

@@ -45,24 +45,30 @@ export default function ThermometerDashboard() {
         <p className="thermometerApiError" role="alert">{data.historyError}</p>
       )}
 
-      <div className="thermometerTemperatureGrid">
-        {data.sensors.map((sensor) => (
-          <TemperatureCard
-            key={sensor.sensorId}
-            label="Current temperature"
-            sensor={sensor}
-            deviceOnline={data.online}
-            unit={unit}
-          />
-        ))}
+      <div className={`thermometerWorkspace ${USING_MOCK_DATA ? "isMock" : ""}`}>
+        <div className="thermometerReadingsColumn">
+          <div className="thermometerTemperatureGrid">
+            {data.sensors.map((sensor) => (
+              <TemperatureCard
+                key={sensor.sensorId}
+                label="Current temperature"
+                sensor={sensor}
+                deviceOnline={data.online}
+                unit={unit}
+              />
+            ))}
+          </div>
+          <DeviceStatus deviceOnline={data.online} sensors={data.sensors} />
+          <TemperatureChart history={data.history} unit={unit} />
+        </div>
+
+        {!USING_MOCK_DATA && (
+          <aside className="thermometerControlsColumn" aria-label="Thermometer controls">
+            <LiveDisplayControls data={data} />
+            <EmailAlerts />
+          </aside>
+        )}
       </div>
-
-      <DeviceStatus deviceOnline={data.online} sensors={data.sensors} />
-
-      <TemperatureChart history={data.history} unit={unit} />
-
-      {!USING_MOCK_DATA && <LiveDisplayControls data={data} />}
-      {!USING_MOCK_DATA && <EmailAlerts />}
 
       {USING_MOCK_DATA && (
         <>
