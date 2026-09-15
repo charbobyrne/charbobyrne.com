@@ -1,10 +1,12 @@
 import { formatTemperature } from "../utils/temperature";
 
 export default function TemperatureCard({ label, sensor, deviceOnline, unit }) {
-  const hasReading = deviceOnline && sensor.connected && sensor.temperature !== null;
+  const hasReading = deviceOnline && sensor.connected && !sensor.stale && sensor.temperature !== null;
   const message = !deviceOnline
     ? "No Data Available"
-    : sensor.stale
+    : !sensor.connected
+      ? "Unplugged sensor"
+      : sensor.stale
       ? "Reading is stale"
       : sensor.connected
         ? "Live reading"
@@ -24,7 +26,7 @@ export default function TemperatureCard({ label, sensor, deviceOnline, unit }) {
       </div>
 
       <div className="thermometerReading" aria-label={`${label} temperature`}>
-        <span>{formatTemperature(sensor.temperature, unit)}</span>
+        <span>{formatTemperature(hasReading ? sensor.temperature : null, unit)}</span>
         {hasReading && <small>°{unit}</small>}
       </div>
       <p className="thermometerCardMessage">{message}</p>

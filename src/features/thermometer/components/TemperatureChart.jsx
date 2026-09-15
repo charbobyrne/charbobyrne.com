@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { historyWindow } from "../utils/history.js";
 import { convertTemperature } from "../utils/temperature";
 
 const VIEW_WIDTH = 1000;
@@ -43,7 +45,13 @@ function createLineSegments(history, sensorId, unit, range) {
   return segments;
 }
 
-export default function TemperatureChart({ history, unit }) {
+export default function TemperatureChart({ history: storedHistory, unit }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const history = historyWindow(storedHistory, now);
   const range = getRange(unit);
   const sensor1Segments = createLineSegments(history, "sensor1", unit, range);
   const sensor2Segments = createLineSegments(history, "sensor2", unit, range);
@@ -51,7 +59,7 @@ export default function TemperatureChart({ history, unit }) {
     { length: Math.floor((range.maximum - range.minimum) / range.step) + 1 },
     (_, index) => range.minimum + index * range.step,
   );
-  const xTicks = [-300, -240, -180, -120, -60, 0];
+  const xTicks = [300, 240, 180, 120, 60, 0];
 
   return (
     <section className="card thermometerChartPanel" aria-labelledby="temperature-history-title">
@@ -67,9 +75,9 @@ export default function TemperatureChart({ history, unit }) {
       </div>
 
       <div className="thermometerChartScroller">
-        {history.length === 0 && (
+        {history.every((point) => point.sensor1 === null && point.sensor2 === null) && (
           <p className="thermometerEmptyHistory" role="status">
-            No temperature history is available yet.
+            No readings in the last 300 seconds. The time window continues scrolling.
           </p>
         )}
         <svg
@@ -103,16 +111,16 @@ export default function TemperatureChart({ history, unit }) {
           })}
 
           {sensor1Segments.map((points, index) => (
-            <polyline key={`sensor1-${index}`} className="thermometerDataLine sensor1" points={points.join(" ")} />
+            <polyline key={`sensor1-${index}`} className="thermometerDataLine sensor1" points={points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ")} />
           ))}
           {sensor2Segments.map((points, index) => (
-            <polyline key={`sensor2-${index}`} className="thermometerDataLine sensor2" points={points.join(" ")} />
+            <polyline key={`sensor2-${index}`} className="thermometerDataLine sensor2" points={points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ")} />
           ))}
         </svg>
       </div>
 
       <p className="thermometerChartNote">
-        New readings appear on the right. Missing sensor values create a gap rather than a zero reading.
+        Horizontal axis: seconds ago. Missing readings are gaps; values outside the fixed range appear at the top or bottom edge.
       </p>
     </section>
   );

@@ -1,4 +1,5 @@
-const API_URL = (import.meta.env.VITE_LAB1_API_URL || "http://localhost:8787").replace(/\/$/, "");
+import { mergeReadings } from "../utils/history.js";
+const API_URL = (import.meta.env?.VITE_LAB1_API_URL || "http://localhost:8787").replace(/\/$/, "");
 const CURRENT_INTERVAL_MS = 1000;
 const HISTORY_INTERVAL_MS = 30000;
 const REQUEST_TIMEOUT_MS = 4000;
@@ -9,6 +10,7 @@ let historyTimerId = null;
 let starting = false;
 let currentRequestPending = false;
 let historyRequestPending = false;
+let nextHistoryAt = 0;
 
 let snapshot = {
   deviceId: "device1",
@@ -33,21 +35,6 @@ function notify() {
   listeners.forEach((listener) => listener());
 }
 
-function appendCurrentToHistory(current) {
-  const liveSensors = current.sensors.filter((sensor) => !sensor.stale && sensor.timestamp);
-  if (liveSensors.length === 0) return snapshot.history;
-  const timestampMs = Math.max(...liveSensors.map((sensor) => Date.parse(sensor.timestamp)));
-  if (!Number.isFinite(timestampMs)) return snapshot.history;
-  const timestamp = new Date(Math.floor(timestampMs / 1000) * 1000).toISOString();
-  const point = { timestamp, sensor1: null, sensor2: null };
-  for (const sensor of liveSensors) point[sensor.sensorId] = sensor.temperature;
-  const withoutSameTimestamp = snapshot.history.filter((item) => item.timestamp !== timestamp);
-  const cutoff = timestampMs - 300000;
-  return [...withoutSameTimestamp, point]
-    .filter((item) => Date.parse(item.timestamp) >= cutoff)
-    .sort((left, right) => Date.parse(left.timestamp) - Date.parse(right.timestamp));
-}
-
 async function fetchJson(path) {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -67,18 +54,22 @@ async function refreshCurrent() {
   if (currentRequestPending) return;
   currentRequestPending = true;
   try {
+    const wasOnline = snapshot.online;
     const current = await fetchJson("/api/lab1/current");
     snapshot = {
       ...snapshot,
       ...current,
-      history: appendCurrentToHistory(current),
+      history: mergeReadings(snapshot.history, current),
       loading: false,
       error: null,
     };
+    if (current.online && !wasOnline) void refreshHistory();
   } catch (error) {
     snapshot = {
       ...snapshot,
       loading: false,
+      online: false,
+      sensors: snapshot.sensors.map((sensor) => ({ ...sensor, temperature: null, timestamp: null, stale: true })),
       error: error.name === "AbortError"
         ? "The thermometer API timed out."
         : "Live thermometer data is unavailable.",
@@ -92,10 +83,21 @@ async function refreshCurrent() {
 async function refreshHistory() {
   if (historyRequestPending) return;
   historyRequestPending = true;
+  const startedAt = Date.now();
   try {
     const response = await fetchJson("/api/lab1/history?seconds=300");
-    snapshot = { ...snapshot, history: response.history, historyError: null };
+    const recent = snapshot.history.filter((point) => Date.parse(point.timestamp) >= Math.floor(startedAt / 1000) * 1000);
+    const combined = new Map(response.history.map((point) => [point.timestamp, point]));
+    for (const point of recent) {
+      const existing = combined.get(point.timestamp) || {};
+      combined.set(point.timestamp, { ...existing, ...point,
+        sensor1: point.sensor1 ?? existing.sensor1 ?? null,
+        sensor2: point.sensor2 ?? existing.sensor2 ?? null });
+    }
+    snapshot = { ...snapshot, history: [...combined.values()].sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)), historyError: null };
+    nextHistoryAt = Date.now() + HISTORY_INTERVAL_MS;
   } catch {
+    nextHistoryAt = Date.now() + 1000;
     snapshot = {
       ...snapshot,
       historyError: "Recorded temperature history is unavailable.",
@@ -116,7 +118,14 @@ function clearTimers() {
 function scheduleTimers() {
   if (document.hidden || currentTimerId !== null) return;
   currentTimerId = window.setInterval(refreshCurrent, CURRENT_INTERVAL_MS);
-  historyTimerId = window.setInterval(refreshHistory, HISTORY_INTERVAL_MS);
+  historyTimerId = window.setInterval(() => {
+    if (Date.now() >= nextHistoryAt) void refreshHistory();
+    const now = Date.now();
+    snapshot = { ...snapshot, history: snapshot.history.filter((point) => Date.parse(point.timestamp) >= now - 301000),
+      sensors: snapshot.sensors.map((sensor) => now - Date.parse(sensor.timestamp) > 5000
+        ? { ...sensor, temperature: null, timestamp: null, stale: true } : sensor) };
+    notify();
+  }, 1000);
 }
 
 function handleVisibilityChange() {
@@ -131,6 +140,7 @@ function handleVisibilityChange() {
 async function start() {
   if (starting || currentTimerId !== null) return;
   starting = true;
+  scheduleTimers();
   try {
     await Promise.all([refreshCurrent(), refreshHistory()]);
     if (listeners.size > 0) {

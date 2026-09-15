@@ -1,5 +1,6 @@
 import { useState } from "react";
 import EmailAlerts from "./components/EmailAlerts";
+import LiveDisplayControls from "./components/LiveDisplayControls";
 import DeviceStatus from "./components/DeviceStatus";
 import DisplayControls from "./components/DisplayControls";
 import SimulationControls from "./components/SimulationControls";
@@ -60,6 +61,7 @@ export default function ThermometerDashboard() {
 
       <TemperatureChart history={data.history} unit={unit} />
 
+      {!USING_MOCK_DATA && <LiveDisplayControls data={data} />}
       {!USING_MOCK_DATA && <EmailAlerts />}
 
       {USING_MOCK_DATA && (
