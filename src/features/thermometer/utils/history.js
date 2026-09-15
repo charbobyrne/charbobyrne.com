@@ -12,6 +12,20 @@ export function mergeReadings(history, current, now = Date.now()) {
     .sort(([a], [b]) => a - b).map(([, row]) => row);
 }
 
+export function mergeHistoryRefresh(serverHistory, localHistory) {
+  const rows = new Map(serverHistory.map((row) => [row.timestamp, { ...row }]));
+  for (const local of localHistory) {
+    const server = rows.get(local.timestamp) || {};
+    rows.set(local.timestamp, {
+      ...server,
+      ...local,
+      sensor1: local.sensor1 ?? server.sensor1 ?? null,
+      sensor2: local.sensor2 ?? server.sensor2 ?? null,
+    });
+  }
+  return [...rows.values()].sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
+}
+
 // Fixed one-second positions; absent records are explicit gaps, never interpolation.
 export function historyWindow(history, now) {
   const end = Math.floor(now / 1000);

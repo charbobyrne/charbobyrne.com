@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { historyWindow, mergeReadings, displayConfirmed } from "../src/features/thermometer/utils/history.js";
+import { historyWindow, mergeHistoryRefresh, mergeReadings, displayConfirmed } from "../src/features/thermometer/utils/history.js";
 
 const now = Date.parse("2026-09-14T20:00:00Z");
 const at = (seconds) => new Date(now + seconds * 1000).toISOString();
@@ -41,6 +41,22 @@ test("off-scale readings remain real values, while missing readings stay null", 
   const row = historyWindow([{ timestamp: at(0), sensor1: -10, sensor2: 63 }], now)[300];
   assert.equal(row.sensor1, -10);
   assert.equal(row.sensor2, 63);
+});
+
+test("history refresh cannot erase locally observed samples with delayed null buckets", () => {
+  const server = [
+    { timestamp: at(-2), sensor1: 21, sensor2: 22 },
+    { timestamp: at(-1), sensor1: null, sensor2: null },
+  ];
+  const local = [
+    { timestamp: at(-1), sensor1: 23, sensor2: 24 },
+    { timestamp: at(0), sensor1: 25, sensor2: null },
+  ];
+  assert.deepEqual(mergeHistoryRefresh(server, local), [
+    server[0],
+    local[0],
+    local[1],
+  ]);
 });
 
 test("display confirmation requires matching actual state and a post-request timestamp", () => {

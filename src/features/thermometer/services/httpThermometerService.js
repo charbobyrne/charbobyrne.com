@@ -1,4 +1,4 @@
-import { mergeReadings } from "../utils/history.js";
+import { mergeHistoryRefresh, mergeReadings } from "../utils/history.js";
 const API_URL = (import.meta.env?.VITE_LAB1_API_URL || "http://localhost:8787").replace(/\/$/, "");
 const CURRENT_INTERVAL_MS = 1000;
 const HISTORY_INTERVAL_MS = 30000;
@@ -86,15 +86,8 @@ async function refreshHistory() {
   const startedAt = Date.now();
   try {
     const response = await fetchJson("/api/lab1/history?seconds=300");
-    const recent = snapshot.history.filter((point) => Date.parse(point.timestamp) >= Math.floor(startedAt / 1000) * 1000);
-    const combined = new Map(response.history.map((point) => [point.timestamp, point]));
-    for (const point of recent) {
-      const existing = combined.get(point.timestamp) || {};
-      combined.set(point.timestamp, { ...existing, ...point,
-        sensor1: point.sensor1 ?? existing.sensor1 ?? null,
-        sensor2: point.sensor2 ?? existing.sensor2 ?? null });
-    }
-    snapshot = { ...snapshot, history: [...combined.values()].sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)), historyError: null };
+    const localWindow = snapshot.history.filter((point) => Date.parse(point.timestamp) >= startedAt - 301000);
+    snapshot = { ...snapshot, history: mergeHistoryRefresh(response.history, localWindow), historyError: null };
     nextHistoryAt = Date.now() + HISTORY_INTERVAL_MS;
   } catch {
     nextHistoryAt = Date.now() + 1000;
