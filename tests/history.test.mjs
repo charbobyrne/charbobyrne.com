@@ -77,6 +77,31 @@ test("brief connected sampling gaps are smoothed but explicit outages remain gap
   assert.equal(offline[299].sensor2, null);
 });
 
+test("live OFF and disconnected observations survive reconnection and block smoothing", () => {
+  const before = mergeReadings([], { online: true, lastSeen: at(-3), sensors: [
+    { sensorId: "sensor1", timestamp: at(-3), temperature: 20, connected: true, stale: false },
+    { sensorId: "sensor2", timestamp: at(-3), temperature: 30, connected: true, stale: false },
+  ] }, now);
+  const disconnected = mergeReadings(before, { online: true, lastSeen: at(-2), sensors: [
+    { sensorId: "sensor1", timestamp: null, temperature: null, connected: false, stale: true },
+    { sensorId: "sensor2", timestamp: at(-2), temperature: 31, connected: true, stale: false },
+  ] }, now);
+  const reconnected = mergeReadings(disconnected, { online: true, lastSeen: at(0), sensors: [
+    { sensorId: "sensor1", timestamp: at(0), temperature: 22, connected: true, stale: false },
+    { sensorId: "sensor2", timestamp: at(0), temperature: 32, connected: true, stale: false },
+  ] }, now);
+  const window = historyWindow(reconnected, now);
+  assert.equal(window[298].sensor1, null);
+  assert.equal(window[299].sensor1, null);
+  assert.equal(window[299].sensor2, 31.5);
+
+  const offline = mergeReadings(reconnected, { online: false, lastSeen: at(0), sensors: [
+    { sensorId: "sensor1", timestamp: null, temperature: null, connected: true, stale: true },
+    { sensorId: "sensor2", timestamp: null, temperature: null, connected: true, stale: true },
+  ] }, now);
+  assert.equal(offline.at(-1).online, false);
+});
+
 test("display confirmation requires matching actual state and a post-request timestamp", () => {
   const command = { enabled: false, requestedAt: at(0) };
   assert.equal(displayConfirmed({ displayEnabled: false, displayTimestamp: at(-1) }, command, true), false);

@@ -1,5 +1,15 @@
 export function mergeReadings(history, current, now = Date.now()) {
   const rows = new Map(history.map((row) => [Math.floor(Date.parse(row.timestamp) / 1000), { ...row }]));
+  const statusTimestamp = Date.parse(current.lastSeen);
+  if (Number.isFinite(statusTimestamp) && statusTimestamp <= now + 1000 && statusTimestamp >= now - 301000) {
+    const statusSecond = Math.floor(statusTimestamp / 1000);
+    const statusRow = rows.get(statusSecond) || {
+      timestamp: new Date(statusSecond * 1000).toISOString(), sensor1: null, sensor2: null,
+    };
+    statusRow.online = current.online;
+    for (const sensor of current.sensors) statusRow[`${sensor.sensorId}Connected`] = sensor.connected;
+    rows.set(statusSecond, statusRow);
+  }
   if (current.online) for (const sensor of current.sensors) {
     const timestamp = Date.parse(sensor.timestamp);
     if (!sensor.connected || sensor.stale || !Number.isFinite(sensor.temperature) || !Number.isFinite(timestamp) || now - timestamp > 5000 || timestamp > now + 1000) continue;
@@ -14,7 +24,7 @@ export function mergeReadings(history, current, now = Date.now()) {
     .sort(([a], [b]) => a - b).map(([, row]) => row);
 }
 
-const MAX_SMOOTHABLE_GAP_SECONDS = 30;
+const MAX_SMOOTHABLE_GAP_SECONDS = 2;
 
 function smoothConnectedGaps(history, sensorId) {
   let previousIndex = -1;
