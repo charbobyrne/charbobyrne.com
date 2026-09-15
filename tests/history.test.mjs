@@ -59,6 +59,24 @@ test("history refresh cannot erase locally observed samples with delayed null bu
   ]);
 });
 
+test("brief connected sampling gaps are smoothed but explicit outages remain gaps", () => {
+  const connected = historyWindow([
+    { timestamp: at(-2), sensor1: 20, sensor2: 30, online: true, sensor1Connected: true, sensor2Connected: true },
+    { timestamp: at(-1), sensor1: null, sensor2: null, online: true, sensor1Connected: true, sensor2Connected: false },
+    { timestamp: at(0), sensor1: 22, sensor2: 32, online: true, sensor1Connected: true, sensor2Connected: true },
+  ], now);
+  assert.equal(connected[299].sensor1, 21);
+  assert.equal(connected[299].sensor2, null);
+
+  const offline = historyWindow([
+    { timestamp: at(-2), sensor1: 20, sensor2: 30, online: true },
+    { timestamp: at(-1), sensor1: null, sensor2: null, online: false },
+    { timestamp: at(0), sensor1: 22, sensor2: 32, online: true },
+  ], now);
+  assert.equal(offline[299].sensor1, null);
+  assert.equal(offline[299].sensor2, null);
+});
+
 test("display confirmation requires matching actual state and a post-request timestamp", () => {
   const command = { enabled: false, requestedAt: at(0) };
   assert.equal(displayConfirmed({ displayEnabled: false, displayTimestamp: at(-1) }, command, true), false);
