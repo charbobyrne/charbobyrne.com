@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getTemperaturePresentation } from "../src/features/thermometer/utils/temperature.js";
+import { getSensorStatusPresentation, getTemperaturePresentation } from "../src/features/thermometer/utils/temperature.js";
 
 const sensor = (overrides = {}) => ({
   connected: true,
@@ -28,4 +28,23 @@ test("box-off and stale readings replace temperatures with no data available", (
   assert.deepEqual(getTemperaturePresentation(false, sensor()), expected);
   assert.deepEqual(getTemperaturePresentation(true, sensor({ stale: true })), expected);
   assert.deepEqual(getTemperaturePresentation(true, sensor({ temperature: null })), expected);
+});
+
+test("system status uses the same required user-facing states", () => {
+  assert.deepEqual(getSensorStatusPresentation(true, sensor()), {
+    online: true,
+    detail: "Connected",
+  });
+  assert.deepEqual(getSensorStatusPresentation(true, sensor({ connected: false, stale: true, temperature: null })), {
+    online: false,
+    detail: "Unplugged sensor",
+  });
+  assert.deepEqual(getSensorStatusPresentation(true, sensor({ stale: true })), {
+    online: false,
+    detail: "No data available",
+  });
+  assert.deepEqual(getSensorStatusPresentation(false, sensor()), {
+    online: false,
+    detail: "No data available",
+  });
 });

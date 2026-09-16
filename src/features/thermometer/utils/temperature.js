@@ -29,3 +29,11 @@ export function getTemperaturePresentation(deviceOnline, sensor) {
   return { hasReading: false, message: "No data available" };
 }
 
+export function getSensorStatusPresentation(deviceOnline, sensor) {
+  const { hasReading, message } = getTemperaturePresentation(deviceOnline, sensor);
+  return {
+    online: hasReading,
+    detail: hasReading ? "Connected" : message,
+  };
+}
+

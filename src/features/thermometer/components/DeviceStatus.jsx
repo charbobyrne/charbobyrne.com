@@ -1,3 +1,5 @@
+import { getSensorStatusPresentation } from "../utils/temperature";
+
 function StatusItem({ label, online, detail }) {
   return (
     <div className="thermometerStatusItem">
@@ -24,16 +26,17 @@ export default function DeviceStatus({ deviceOnline, sensors }) {
           online={deviceOnline}
           detail={deviceOnline ? "Online" : "Offline or no recent heartbeat"}
         />
-        {sensors.map((sensor) => (
-          <StatusItem
-            key={sensor.sensorId}
-            label={sensor.sensorId === "sensor1" ? "Sensor 1" : "Sensor 2"}
-            online={deviceOnline && sensor.connected && !sensor.stale}
-            detail={deviceOnline
-              ? sensor.stale ? "Stale reading" : sensor.connected ? "Connected" : "No reading"
-              : "Device offline"}
-          />
-        ))}
+        {sensors.map((sensor) => {
+          const presentation = getSensorStatusPresentation(deviceOnline, sensor);
+          return (
+            <StatusItem
+              key={sensor.sensorId}
+              label={sensor.sensorId === "sensor1" ? "Sensor 1" : "Sensor 2"}
+              online={presentation.online}
+              detail={presentation.detail}
+            />
+          );
+        })}
       </div>
     </section>
   );
