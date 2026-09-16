@@ -4,7 +4,7 @@ import { convertTemperature } from "../utils/temperature";
 
 const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 300;
-const PADDING = { top: 20, right: 20, bottom: 42, left: 58 };
+const PADDING = { top: 20, right: 58, bottom: 42, left: 20 };
 const PLOT_WIDTH = VIEW_WIDTH - PADDING.left - PADDING.right;
 const PLOT_HEIGHT = VIEW_HEIGHT - PADDING.top - PADDING.bottom;
 
@@ -91,7 +91,7 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
             return (
               <g key={tick}>
                 <line className="thermometerGridLine" x1={PADDING.left} x2={VIEW_WIDTH - PADDING.right} y1={y} y2={y} />
-                <text className="thermometerAxisLabel" x={PADDING.left - 12} y={y + 4} textAnchor="end">
+                <text className="thermometerAxisLabel" x={VIEW_WIDTH - PADDING.right + 12} y={y + 4} textAnchor="start">
                   {tick}°
                 </text>
               </g>
@@ -109,6 +109,14 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
               </g>
             );
           })}
+
+          <line
+            className="thermometerAxisLine"
+            x1={VIEW_WIDTH - PADDING.right}
+            x2={VIEW_WIDTH - PADDING.right}
+            y1={PADDING.top}
+            y2={PADDING.top + PLOT_HEIGHT}
+          />
 
           {sensor1Segments.map((points, index) => (
             <polyline key={`sensor1-${index}`} className="thermometerDataLine sensor1" points={points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ")} />

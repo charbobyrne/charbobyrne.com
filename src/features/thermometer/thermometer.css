@@ -247,6 +247,12 @@
   stroke-dasharray: 4 6;
 }
 
+.thermometerAxisLine {
+  stroke: rgba(255, 255, 255, 0.48);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
 .thermometerAxisLabel {
   fill: rgba(255, 255, 255, 0.58);
   font-size: 13px;
