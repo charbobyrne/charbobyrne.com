@@ -114,7 +114,7 @@ export default function EmailAlerts() {
               onChange={setTestThreshold} disabled={busy || !configured} />
             20 degrees C email test
           </label>
-          <small>Immediately saves a 20 degrees C maximum and enables alerts. A fresh reading above 20 degrees C sends one email per sensor.</small>
+          <small>Immediately saves a 20 degrees C maximum, re-arms the threshold test, and enables alerts. A fresh connected reading above 20 degrees C sends one email per sensor.</small>
           <label>Recipient email<input name="recipient" type="email" value={draft.recipient} onChange={updateDraft} required maxLength={254} /></label>
           <div className="thermometerEmailLimits">
             <label>Minimum (°C)<input name="minC" type="number" min="-55" max="125" step="any" value={draft.minC} onChange={updateDraft} required /></label>
