@@ -1,16 +1,7 @@
-import { formatTemperature } from "../utils/temperature";
+import { formatTemperature, getTemperaturePresentation } from "../utils/temperature";
 
 export default function TemperatureCard({ label, sensor, deviceOnline, unit }) {
-  const hasReading = deviceOnline && sensor.connected && !sensor.stale && sensor.temperature !== null;
-  const message = !deviceOnline
-    ? "No Data Available"
-    : !sensor.connected
-      ? "Unplugged sensor"
-      : sensor.stale
-      ? "Reading is stale"
-      : sensor.connected
-        ? "Live reading"
-        : "Sensor unavailable";
+  const { hasReading, message } = getTemperaturePresentation(deviceOnline, sensor);
 
   return (
     <article className="card thermometerTemperatureCard">
