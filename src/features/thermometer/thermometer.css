@@ -222,6 +222,14 @@
   background: #fbbf24;
 }
 
+.thermometerChartLegend .offScaleLow {
+  background: #2563eb;
+}
+
+.thermometerChartLegend .offScaleHigh {
+  background: #ef4444;
+}
+
 .thermometerChartScroller {
   width: 100%;
   margin-top: 18px;
@@ -272,6 +280,14 @@
 
 .thermometerDataLine.sensor2 {
   stroke: #fbbf24;
+}
+
+.thermometerDataLine.offScaleLow {
+  stroke: #2563eb;
+}
+
+.thermometerDataLine.offScaleHigh {
+  stroke: #ef4444;
 }
 
 .thermometerChartNote {

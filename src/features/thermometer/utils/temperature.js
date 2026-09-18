@@ -37,3 +37,9 @@ export function getSensorStatusPresentation(deviceOnline, sensor) {
   };
 }
 
+export function classifyGraphValue(value, range) {
+  if (value < range.minimum) return "offScaleLow";
+  if (value > range.maximum) return "offScaleHigh";
+  return "inRange";
+}
+

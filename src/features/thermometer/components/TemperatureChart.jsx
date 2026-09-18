@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { historyWindow } from "../utils/history.js";
-import { convertTemperature } from "../utils/temperature";
+import { classifyGraphValue, convertTemperature } from "../utils/temperature";
 
 const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 300;
@@ -27,21 +27,35 @@ function yPosition(value, range) {
 
 function createLineSegments(history, sensorId, unit, range) {
   const segments = [];
-  let currentSegment = [];
+  let currentSegment = null;
+
+  function finishSegment() {
+    if (currentSegment?.points.length) segments.push(currentSegment);
+    currentSegment = null;
+  }
 
   history.forEach((reading, index) => {
     const value = convertTemperature(reading[sensorId], unit);
 
     if (value === null) {
-      if (currentSegment.length > 0) segments.push(currentSegment);
-      currentSegment = [];
+      finishSegment();
       return;
     }
 
-    currentSegment.push(`${xPosition(index, history.length)},${yPosition(value, range)}`);
+    const point = `${xPosition(index, history.length)},${yPosition(value, range)}`;
+    const condition = classifyGraphValue(value, range);
+    if (!currentSegment) {
+      currentSegment = { condition, points: [point] };
+    } else if (currentSegment.condition === condition) {
+      currentSegment.points.push(point);
+    } else {
+      const previousPoint = currentSegment.points.at(-1);
+      finishSegment();
+      currentSegment = { condition, points: [previousPoint, point] };
+    }
   });
 
-  if (currentSegment.length > 0) segments.push(currentSegment);
+  finishSegment();
   return segments;
 }
 
@@ -71,6 +85,8 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
         <div className="thermometerChartLegend" aria-label="Chart legend">
           <span><i className="sensor1" />Sensor 1</span>
           <span><i className="sensor2" />Sensor 2</span>
+          <span><i className="offScaleLow" />Below scale</span>
+          <span><i className="offScaleHigh" />Above scale</span>
         </div>
       </div>
 
@@ -84,7 +100,7 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
           className="thermometerChart"
           viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
           role="img"
-          aria-label={`Two-sensor temperature history in degrees ${unit === "C" ? "Celsius" : "Fahrenheit"}. Missing readings appear as gaps.`}
+          aria-label={`Two-sensor temperature history in degrees ${unit === "C" ? "Celsius" : "Fahrenheit"}. Missing readings appear as gaps. Below-scale readings are blue and above-scale readings are red.`}
         >
           {yTicks.map((tick) => {
             const y = yPosition(tick, range);
@@ -118,17 +134,17 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
             y2={PADDING.top + PLOT_HEIGHT}
           />
 
-          {sensor1Segments.map((points, index) => (
-            <polyline key={`sensor1-${index}`} className="thermometerDataLine sensor1" points={points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ")} />
+          {sensor1Segments.map((segment, index) => (
+            <polyline key={`sensor1-${index}`} className={`thermometerDataLine ${segment.condition === "inRange" ? "sensor1" : segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
           ))}
-          {sensor2Segments.map((points, index) => (
-            <polyline key={`sensor2-${index}`} className="thermometerDataLine sensor2" points={points.length === 1 ? `${points[0]} ${points[0]}` : points.join(" ")} />
+          {sensor2Segments.map((segment, index) => (
+            <polyline key={`sensor2-${index}`} className={`thermometerDataLine ${segment.condition === "inRange" ? "sensor2" : segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
           ))}
         </svg>
       </div>
 
       <p className="thermometerChartNote">
-        Horizontal axis: seconds ago. Missing readings are gaps; values outside the fixed range appear at the top or bottom edge.
+        Horizontal axis: seconds ago. Missing readings are gaps. Below-scale readings appear blue at the bottom edge; above-scale readings appear red at the top edge.
       </p>
     </section>
   );

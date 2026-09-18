@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getSensorStatusPresentation, getTemperaturePresentation } from "../src/features/thermometer/utils/temperature.js";
+import { classifyGraphValue, getSensorStatusPresentation, getTemperaturePresentation } from "../src/features/thermometer/utils/temperature.js";
 
 const sensor = (overrides = {}) => ({
   connected: true,
@@ -47,4 +47,12 @@ test("system status uses the same required user-facing states", () => {
     online: false,
     detail: "No data available",
   });
+});
+
+test("graph values distinguish low, in-range, and high readings", () => {
+  const celsiusRange = { minimum: 10, maximum: 50 };
+  assert.equal(classifyGraphValue(9.9, celsiusRange), "offScaleLow");
+  assert.equal(classifyGraphValue(10, celsiusRange), "inRange");
+  assert.equal(classifyGraphValue(50, celsiusRange), "inRange");
+  assert.equal(classifyGraphValue(50.1, celsiusRange), "offScaleHigh");
 });
