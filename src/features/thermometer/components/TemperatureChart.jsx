@@ -85,8 +85,10 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
         <div className="thermometerChartLegend" aria-label="Chart legend">
           <span><i className="sensor1" />Sensor 1</span>
           <span><i className="sensor2" />Sensor 2</span>
-          <span><i className="offScaleLow" />Below scale</span>
-          <span><i className="offScaleHigh" />Above scale</span>
+          <span><i className="sensor1Low" />Sensor 1 low</span>
+          <span><i className="sensor2Low" />Sensor 2 low</span>
+          <span><i className="sensor1High" />Sensor 1 high</span>
+          <span><i className="sensor2High" />Sensor 2 high</span>
         </div>
       </div>
 
@@ -100,7 +102,7 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
           className="thermometerChart"
           viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
           role="img"
-          aria-label={`Two-sensor temperature history in degrees ${unit === "C" ? "Celsius" : "Fahrenheit"}. Missing readings appear as gaps. Below-scale readings are blue and above-scale readings are red.`}
+          aria-label={`Two-sensor temperature history in degrees ${unit === "C" ? "Celsius" : "Fahrenheit"}. Missing readings appear as gaps. Sensor 1 is dark blue when low and red when high. Sensor 2 is purple when low and yellow when high.`}
         >
           {yTicks.map((tick) => {
             const y = yPosition(tick, range);
@@ -135,16 +137,16 @@ export default function TemperatureChart({ history: storedHistory, unit }) {
           />
 
           {sensor1Segments.map((segment, index) => (
-            <polyline key={`sensor1-${index}`} className={`thermometerDataLine ${segment.condition === "inRange" ? "sensor1" : segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
+            <polyline key={`sensor1-${index}`} className={`thermometerDataLine sensor1 ${segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
           ))}
           {sensor2Segments.map((segment, index) => (
-            <polyline key={`sensor2-${index}`} className={`thermometerDataLine ${segment.condition === "inRange" ? "sensor2" : segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
+            <polyline key={`sensor2-${index}`} className={`thermometerDataLine sensor2 ${segment.condition}`} points={segment.points.length === 1 ? `${segment.points[0]} ${segment.points[0]}` : segment.points.join(" ")} />
           ))}
         </svg>
       </div>
 
       <p className="thermometerChartNote">
-        Horizontal axis: seconds ago. Missing readings are gaps. Below-scale readings appear blue at the bottom edge; above-scale readings appear red at the top edge.
+        Horizontal axis: seconds ago. Missing readings are gaps. At the bottom edge, low Sensor 1 readings are dark blue and low Sensor 2 readings are purple. At the top edge, high Sensor 1 readings are red and high Sensor 2 readings are yellow.
       </p>
     </section>
   );

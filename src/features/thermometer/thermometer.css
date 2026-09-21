@@ -222,12 +222,20 @@
   background: #fbbf24;
 }
 
-.thermometerChartLegend .offScaleLow {
-  background: #2563eb;
+.thermometerChartLegend .sensor1Low {
+  background: #1d4ed8;
 }
 
-.thermometerChartLegend .offScaleHigh {
+.thermometerChartLegend .sensor2Low {
+  background: #a855f7;
+}
+
+.thermometerChartLegend .sensor1High {
   background: #ef4444;
+}
+
+.thermometerChartLegend .sensor2High {
+  background: #facc15;
 }
 
 .thermometerChartScroller {
@@ -282,12 +290,20 @@
   stroke: #fbbf24;
 }
 
-.thermometerDataLine.offScaleLow {
-  stroke: #2563eb;
+.thermometerDataLine.sensor1.offScaleLow {
+  stroke: #1d4ed8;
 }
 
-.thermometerDataLine.offScaleHigh {
+.thermometerDataLine.sensor2.offScaleLow {
+  stroke: #a855f7;
+}
+
+.thermometerDataLine.sensor1.offScaleHigh {
   stroke: #ef4444;
+}
+
+.thermometerDataLine.sensor2.offScaleHigh {
+  stroke: #facc15;
 }
 
 .thermometerChartNote {
