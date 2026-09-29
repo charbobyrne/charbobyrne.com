@@ -146,19 +146,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.projectCardAi {
-  position: relative;
-  overflow: hidden;
-}
-
-.projectCardAi::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 3px;
-  background: linear-gradient(#8b5cf6, #22d3ee);
-}
-
 .tagRow {
   display: flex;
   flex-wrap: wrap;

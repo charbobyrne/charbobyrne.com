@@ -12,14 +12,15 @@ export default function Projects() {
       </p>
 
       <div className="grid cols-3" style={{ marginTop: 28 }}>
-        <Link className="projectCardLink" to="/projects/ai">
-          <div className="card projectCard projectCardAi">
+        {/* Electrical and Computer Engineering */}
+        <Link className="projectCardLink" to="/projects/electrical">
+          <div className="card projectCard">
             <div className="projectCardTop">
-              <h3 className="projectCardTitle">Artificial Intelligence</h3>
+              <h3 className="projectCardTitle">Electrical/Computer Engineering Projects</h3>
               <div className="projectCardArrow">→</div>
             </div>
             <div className="projectCardDesc">
-              Local language models, semantic search, vector databases, and data-driven analysis.
+              Circuit design, embedded systems, computer architecture, and applied hardware projects.
             </div>
           </div>
         </Link>
@@ -28,7 +29,7 @@ export default function Projects() {
         <Link className="projectCardLink" to="/projects/software">
           <div className="card projectCard">
             <div className="projectCardTop">
-              <h3 className="projectCardTitle">Software Design</h3>
+              <h3 className="projectCardTitle">Software Projects</h3>
               <div className="projectCardArrow">→</div>
             </div>
             <div className="projectCardDesc">
@@ -38,15 +39,15 @@ export default function Projects() {
           </div>
         </Link>
 
-        {/* Electrical Engineering */}
-        <Link className="projectCardLink" to="/projects/electrical">
-          <div className="card projectCard">
+        {/* Artificial Intelligence */}
+        <Link className="projectCardLink" to="/projects/ai">
+          <div className="card projectCard projectCardAi">
             <div className="projectCardTop">
-              <h3 className="projectCardTitle">Electrical Engineering</h3>
+              <h3 className="projectCardTitle">AI Projects</h3>
               <div className="projectCardArrow">→</div>
             </div>
             <div className="projectCardDesc">
-              Circuit design, hardware projects, and applied electrical systems.
+              Local language models, semantic search, vector databases, and data-driven analysis.
             </div>
           </div>
         </Link>

@@ -15,14 +15,14 @@ export default function Home() {
         <div className="kicker" style={{ marginBottom: 10 }}>Projects</div>
 
         <div className="grid cols-3">
-          <Link className="projectCardLink" to="/projects/ai">
-            <div className="card projectCard projectCardAi">
+          <Link className="projectCardLink" to="/projects/electrical">
+            <div className="card projectCard">
               <div className="projectCardTop">
-                <h3 className="projectCardTitle">Artificial Intelligence</h3>
+                <h3 className="projectCardTitle">Electrical/Computer Engineering Projects</h3>
                 <div className="projectCardArrow">→</div>
               </div>
               <div className="projectCardDesc">
-                Local RAG systems, embeddings, vector search, and applied language models.
+                Circuit design, embedded systems, computer architecture, and applied hardware projects.
               </div>
             </div>
           </Link>
@@ -30,7 +30,7 @@ export default function Home() {
           <Link className="projectCardLink" to="/projects/software">
             <div className="card projectCard">
               <div className="projectCardTop">
-                <h3 className="projectCardTitle">Software Design</h3>
+                <h3 className="projectCardTitle">Software Projects</h3>
                 <div className="projectCardArrow">→</div>
               </div>
               <div className="projectCardDesc">
@@ -39,14 +39,14 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link className="projectCardLink" to="/projects/electrical">
-            <div className="card projectCard">
+          <Link className="projectCardLink" to="/projects/ai">
+            <div className="card projectCard projectCardAi">
               <div className="projectCardTop">
-                <h3 className="projectCardTitle">Electrical Engineering</h3>
+                <h3 className="projectCardTitle">AI Projects</h3>
                 <div className="projectCardArrow">→</div>
               </div>
               <div className="projectCardDesc">
-                Circuit design, hardware projects, and applied electrical systems.
+                Local RAG systems, embeddings, vector search, and applied language models.
               </div>
             </div>
           </Link>
