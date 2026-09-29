@@ -82,10 +82,10 @@ function SensorSimulator({ sensor, systemOn, onChange }) {
   );
 }
 
-function WorkflowNode({ active = false, alert = false, eyebrow, title, detail, step = 0 }) {
+function WorkflowNode({ active = false, alert = false, eyebrow, title, detail, pulse = false, step = 0 }) {
   return (
     <div
-      className={`workflowNode ${active ? "isActive" : ""} ${alert ? "isAlert" : ""}`}
+      className={`workflowNode ${active ? "isActive" : ""} ${alert ? "isAlert" : ""} ${pulse ? "isPulse" : ""}`}
       style={{ "--flow-step": step }}
     >
       <span>{eyebrow}</span>
@@ -109,6 +109,14 @@ export default function WebThermometerProject() {
   const [sensors, setSensors] = useState(SENSOR_DEFAULTS);
   const [displayEnabled, setDisplayEnabled] = useState({ sensor1: true, sensor2: true });
   const [activeCommand, setActiveCommand] = useState(null);
+  const [dataFlowStep, setDataFlowStep] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setDataFlowStep((current) => (current + 1) % 5);
+    }, 720);
+    return () => window.clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!activeCommand) return undefined;
@@ -248,19 +256,20 @@ export default function WebThermometerProject() {
                     eyebrow="Probe"
                     title={sensor.label}
                     detail={!systemOn ? "No power" : sensor.connected ? `${formatTemperature(sensor.temperature)} °C` : "Unplugged"}
+                    pulse={available && dataFlowStep === 0}
                     step={0}
                   />
                 );
               })}
             </div>
             <FlowArrow active={dataActive && connectedCount > 0} label="OneWire" />
-            <WorkflowNode active={dataActive} eyebrow="Controller" title="ESP32" detail={systemOn ? "Sampling every second" : "System off"} step={1} />
+            <WorkflowNode active={dataActive} eyebrow="Controller" title="ESP32" detail={systemOn ? "Sampling every second" : "System off"} pulse={dataActive && dataFlowStep === 1} step={1} />
             <FlowArrow active={dataActive} label="HTTPS write" />
-            <WorkflowNode active={dataActive} eyebrow="Time-series storage" title="InfluxDB" detail={systemOn ? "Recording readings and status" : "History retained"} step={2} />
+            <WorkflowNode active={dataActive} eyebrow="Time-series storage" title="InfluxDB" detail={systemOn ? "Recording readings and status" : "History retained"} pulse={dataActive && dataFlowStep === 2} step={2} />
             <FlowArrow active label="HTTPS query" />
-            <WorkflowNode active eyebrow="API and logic" title="Cloudflare Worker" detail={systemOn ? "Returning fresh JSON" : "Returning no data available"} step={3} />
+            <WorkflowNode active eyebrow="API and logic" title="Cloudflare Worker" detail={systemOn ? "Returning fresh JSON" : "Returning no data available"} pulse={dataFlowStep === 3} step={3} />
             <FlowArrow active label="JSON API" />
-            <WorkflowNode active eyebrow="User interface" title="React website" detail="Rendering this simulation" step={4} />
+            <WorkflowNode active eyebrow="User interface" title="React website" detail="Rendering this simulation" pulse={dataFlowStep === 4} step={4} />
           </div>
 
           <div className="workflowDivider" />
