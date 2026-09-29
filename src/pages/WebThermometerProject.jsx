@@ -82,9 +82,12 @@ function SensorSimulator({ sensor, systemOn, onChange }) {
   );
 }
 
-function WorkflowNode({ active = false, alert = false, eyebrow, title, detail }) {
+function WorkflowNode({ active = false, alert = false, eyebrow, title, detail, step = 0 }) {
   return (
-    <div className={`workflowNode ${active ? "isActive" : ""} ${alert ? "isAlert" : ""}`}>
+    <div
+      className={`workflowNode ${active ? "isActive" : ""} ${alert ? "isAlert" : ""}`}
+      style={{ "--flow-step": step }}
+    >
       <span>{eyebrow}</span>
       <strong>{title}</strong>
       <small>{detail}</small>
@@ -245,60 +248,102 @@ export default function WebThermometerProject() {
                     eyebrow="Probe"
                     title={sensor.label}
                     detail={!systemOn ? "No power" : sensor.connected ? `${formatTemperature(sensor.temperature)} °C` : "Unplugged"}
+                    step={0}
                   />
                 );
               })}
             </div>
             <FlowArrow active={dataActive && connectedCount > 0} label="OneWire" />
-            <WorkflowNode active={dataActive} eyebrow="Controller" title="ESP32" detail={systemOn ? "Sampling every second" : "System off"} />
+            <WorkflowNode active={dataActive} eyebrow="Controller" title="ESP32" detail={systemOn ? "Sampling every second" : "System off"} step={1} />
             <FlowArrow active={dataActive} label="HTTPS write" />
-            <WorkflowNode active={dataActive} eyebrow="Time-series storage" title="InfluxDB" detail={systemOn ? "Recording readings and status" : "History retained"} />
+            <WorkflowNode active={dataActive} eyebrow="Time-series storage" title="InfluxDB" detail={systemOn ? "Recording readings and status" : "History retained"} step={2} />
             <FlowArrow active label="HTTPS query" />
-            <WorkflowNode active eyebrow="API and logic" title="Cloudflare Worker" detail={systemOn ? "Returning fresh JSON" : "Returning no data available"} />
+            <WorkflowNode active eyebrow="API and logic" title="Cloudflare Worker" detail={systemOn ? "Returning fresh JSON" : "Returning no data available"} step={3} />
             <FlowArrow active label="JSON API" />
-            <WorkflowNode active eyebrow="User interface" title="React website" detail="Rendering this simulation" />
+            <WorkflowNode active eyebrow="User interface" title="React website" detail="Rendering this simulation" step={4} />
           </div>
 
           <div className="workflowDivider" />
           <div className="workflowLabel">Remote LCD control path</div>
           <div className="controlFlow">
-            <WorkflowNode active={commandActive} eyebrow="User action" title="Website toggle" detail={activeCommand ? `${activeCommand.sensorId === "sensor1" ? "Sensor 1" : "Sensor 2"} ${activeCommand.enabled ? "ON" : "OFF"}` : "Ready for a command"} />
+            <WorkflowNode active={commandActive} eyebrow="User action" title="Website toggle" detail={activeCommand ? `${activeCommand.sensorId === "sensor1" ? "Sensor 1" : "Sensor 2"} ${activeCommand.enabled ? "ON" : "OFF"}` : "Ready for a command"} step={0} />
             <FlowArrow active={commandActive} label="Authenticated request" />
-            <WorkflowNode active={commandActive} eyebrow="Command API" title="Cloudflare Worker" detail={commandActive ? "Creating command ID" : "Waiting"} />
+            <WorkflowNode active={commandActive} eyebrow="Command API" title="Cloudflare Worker" detail={commandActive ? "Creating command ID" : "Waiting"} step={1} />
             <FlowArrow active={commandActive} label="Publish API" />
-            <WorkflowNode active={commandActive} alert={!systemOn} eyebrow="MQTT broker" title="EMQX" detail={!systemOn ? "Device offline" : commandActive ? "QoS 1 command in transit" : "Connected and ready"} />
+            <WorkflowNode active={commandActive} alert={!systemOn} eyebrow="MQTT broker" title="EMQX" detail={!systemOn ? "Device offline" : commandActive ? "QoS 1 command in transit" : "Connected and ready"} step={2} />
             <FlowArrow active={commandActive} label="MQTTS" />
-            <WorkflowNode active={commandActive} alert={!systemOn} eyebrow="Physical output" title="ESP32 LCD" detail={!systemOn ? "Command unavailable" : commandActive ? "Display row updated" : "Showing current state"} />
+            <WorkflowNode active={commandActive} alert={!systemOn} eyebrow="Physical output" title="ESP32 LCD" detail={!systemOn ? "Command unavailable" : commandActive ? "Display row updated" : "Showing current state"} step={3} />
           </div>
         </div>
       </section>
       </div>
 
+      <section className="projectEvidence" aria-labelledby="project-evidence-title">
+        <div className="sectionIntro">
+          <div>
+            <span className="simEyebrow">Built and tested</span>
+            <h2 id="project-evidence-title">Circuit and finished prototype</h2>
+          </div>
+          <p>The final design combined independent digital probe buses, a breadboard-mounted ESP32, a local LCD, removable terminals, and portable USB power.</p>
+        </div>
+        <div className="evidenceGrid">
+          <figure className="schematicFigure">
+            <img src="/images/projects/thermometer/circuit-schematic.jpg" alt="Complete thermometer circuit schematic showing the ESP32, two temperature probes, LCD, buttons, terminal blocks, and portable power" />
+            <figcaption><strong>Final circuit schematic.</strong> Separate OneWire buses and 4.7 kΩ pull-ups connect both probes; the ESP32 also drives the LCD and reads the local controls.</figcaption>
+          </figure>
+          <div className="prototypePhotos">
+            <figure>
+              <img src="/images/projects/thermometer/enclosure-exterior.jpg" alt="Finished thermometer enclosure with LCD, two sensor buttons, power switch, and removable probe connectors" />
+              <figcaption><strong>Finished enclosure.</strong> The front panel exposes the LCD, two local sensor controls, master switch, and removable probe terminals.</figcaption>
+            </figure>
+            <figure>
+              <img src="/images/projects/thermometer/enclosure-interior.jpg" alt="Interior of the thermometer enclosure showing the ESP32 breadboard, wiring, terminals, display connections, and battery pack" />
+              <figcaption><strong>Internal assembly.</strong> The ESP32, breadboard, wiring, connector backs, and rechargeable power bank were secured for inverted and drop testing.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section className="projectStory" aria-labelledby="project-story-title">
         <div className="sectionIntro">
           <div>
             <span className="simEyebrow">Project summary</span>
-            <h2 id="project-story-title">From probe to browser and back</h2>
+            <h2 id="project-story-title">Engineering areas covered</h2>
           </div>
         </div>
         <p className="projectLead">
-          Our four-person team built a battery-powered thermometer around an ESP32, two removable DS18B20 probes, a 16x2 LCD, local controls, and a rugged rapid-prototype enclosure. The firmware samples both probes once per second, detects unplugged sensors without inventing data, and keeps the local display responsive during network interruptions.
+          Our four-person team carried the design from sensor wiring and embedded firmware through secure cloud services, a responsive website, alerts, enclosure construction, and final verification.
         </p>
         <div className="storyGrid">
           <article>
             <span>01</span>
-            <h3>Embedded hardware</h3>
-            <p>Each digital probe uses an independent OneWire bus. Physical buttons and authenticated web commands share the same LCD display state, while the master switch creates a clear system-off condition.</p>
+            <h3>Sensing and electronics</h3>
+            <p>Two waterproof DS18B20 probes use independent OneWire buses with 4.7 kΩ pull-ups. The ESP32 interfaces with a parallel 16x2 LCD, two debounced sensor buttons, a master power switch, and separate 3.3 V and 5 V device rails.</p>
           </article>
           <article>
             <span>02</span>
-            <h3>Cloud pipeline</h3>
-            <p>The ESP32 writes temperature and device status directly to InfluxDB. A Cloudflare Worker serves that history to React, while EMQX carries remote LCD commands back to the ESP32 and Resend delivers threshold emails.</p>
+            <h3>Embedded firmware</h3>
+            <p>A nonblocking loop starts a 9-bit sensor conversion every second, validates each result, detects unplugged probes, debounces local controls, updates the LCD immediately, and continues local operation when Wi-Fi is unavailable.</p>
           </article>
           <article>
             <span>03</span>
-            <h3>Verified behavior</h3>
-            <p>All 20 final tests passed, including ice-water accuracy, disconnected-probe recovery, fixed-scale graphing, power-cycle recovery, remote display control, email alerts, inverted operation, and a drop test.</p>
+            <h3>Cloud data pipeline</h3>
+            <p>The ESP32 writes valid temperatures and complete device status to InfluxDB over HTTPS. The Cloudflare Worker queries current values and 300 seconds of history, then returns stable JSON to the React interface.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Bidirectional control</h3>
+            <p>Website LCD commands pass through an authenticated Worker endpoint to EMQX as QoS 1 MQTT messages. The ESP32 validates each command, changes the selected LCD row, and publishes state for confirmation.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Web interface and alerts</h3>
+            <p>The dashboard shows large live values, Celsius or Fahrenheit units, explicit disconnected and system-off states, and a right-to-left history graph. Resend provides configurable high- and low-temperature email alerts.</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Mechanical design and verification</h3>
+            <p>The rapid-prototype enclosure secures the circuit, battery, controls, display, and removable terminals. All 20 final tests passed, including ice-water accuracy, recovery, remote response, inverted operation, and a drop test.</p>
           </article>
         </div>
       </section>
