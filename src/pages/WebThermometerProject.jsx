@@ -158,6 +158,7 @@ export default function WebThermometerProject() {
         <div className="completionBadge"><i /> Completed project</div>
       </header>
 
+      <div className="projectInteractiveGrid">
       <section className="simulationSection" aria-labelledby="simulation-title">
         <div className="sectionIntro">
           <div>
@@ -271,6 +272,7 @@ export default function WebThermometerProject() {
           </div>
         </div>
       </section>
+      </div>
 
       <section className="projectStory" aria-labelledby="project-story-title">
         <div className="sectionIntro">
