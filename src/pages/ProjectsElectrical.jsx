@@ -11,6 +11,19 @@ export default function ProjectsElectrical() {
       </p>
 
       <div className="grid cols-2" style={{ marginTop: 22 }}>
+        <Link className="projectCardLink" to="/projects/electrical/web-connected-thermometer">
+          <div className="card projectCard">
+            <div className="projectCardTop">
+              <h3 className="projectCardTitle">Web-Connected Dual-Sensor Thermometer</h3>
+              <div className="projectCardArrow" aria-hidden="true">→</div>
+            </div>
+            <div className="projectCardDesc">
+              An ESP32 thermometer with two removable probes, local LCD controls,
+              cloud history, remote display commands, and configurable email alerts.
+            </div>
+          </div>
+        </Link>
+
         <Link className="projectCardLink" to="/projects/electrical/custom-32-bit-processor">
           <div className="card projectCard">
             <div className="projectCardTop">

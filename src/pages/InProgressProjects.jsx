@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ThermometerDashboard from "../features/thermometer/ThermometerDashboard";
 
 const PASSCODE = "4880";
 
@@ -22,7 +21,18 @@ export default function InProgressProjects() {
   }
 
   if (isUnlocked) {
-    return <ThermometerDashboard />;
+    return (
+      <section className="inProgressPage">
+        <div className="card inProgressPlaceholder">
+          <div className="kicker">Restricted access</div>
+          <h2>No projects are currently in progress</h2>
+          <p className="sub">
+            Completed work has moved to its permanent project category. This protected
+            page remains available for future development previews.
+          </p>
+        </div>
+      </section>
+    );
   }
 
   return (

@@ -14,6 +14,7 @@ import ProjectsSoftwareCCpp from "./pages/ProjectsSoftwareCCpp";
 import ProjectsSoftwarePython from "./pages/ProjectsSoftwarePython";
 import CCppProjectCaseStudy from "./pages/CCppProjectCaseStudy";
 import ProjectsElectrical from "./pages/ProjectsElectrical";
+import WebThermometerProject from "./pages/WebThermometerProject";
 import EmbeddedParkingSensor from "./pages/EmbeddedParkingSensor";
 import IoTDroneController from "./pages/IoTDroneController";
 import SiscProcessor from "./pages/SiscProcessor";
@@ -52,6 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/projects/software/python" element={<ProjectsSoftwarePython />} />
 
           <Route path="/projects/electrical" element={<ProjectsElectrical />} />
+          <Route path="/projects/electrical/web-connected-thermometer" element={<WebThermometerProject />} />
           <Route path="/projects/electrical/parking-sensor" element={<EmbeddedParkingSensor />} />
           <Route path="/projects/electrical/iot-drone-controller" element={<IoTDroneController />} />
           <Route path="/projects/electrical/custom-32-bit-processor" element={<SiscProcessor />} />
